@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Goblin+One&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: black;
+}
+.navi{
+    font-family: 'Goblin One', cursive;
+    color: rgb(10, 0, 0);
+    background-color:rgb(255, 255, 255);
+    padding-top:14px;
+    padding-bottom:14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+nav p{
+    color: black;
+}
+
+nav img {
+    width: 120px;
+}
+.estilo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#canvas{
+    margin-top: 50px;
+    background-color: white;
+}
