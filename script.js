@@ -5,16 +5,16 @@ const button = document.querySelector("button");
 //DECLARO TODAS LAS VARIABLES QUE UTILIZO EN EL JUEGO
 
 const pulpin = [
-    "/images/Chef Actions/done/0.png",
-    "/images/Chef Actions/done/1.png",
-    "/images/Chef Actions/done/2.png",
-    "/images/Chef Actions/done/3.png",
-    "/images/Chef Actions/done/4.png",
-    "/images/Chef Actions/done/5.png",
-    "/images/Chef Actions/done/6.png",
-    "/images/Chef Actions/done/7.png",
-    "/images/Chef Actions/done/8.png",
-    "/images/Chef Actions/done/9.png"
+    "./images/ChefActions/done/0.png",
+    "./images/ChefActions/done/1.png",
+    "./images/ChefActions/done/2.png",
+    "./images/ChefActions/done/3.png",
+    "./images/ChefActions/done/4.png",
+    "./images/ChefActions/done/5.png",
+    "./images/ChefActions/done/6.png",
+    "./images/ChefActions/done/7.png",
+    "./images/ChefActions/done/8.png",
+    "./images/ChefActions/done/9.png"
 ]
 
 let frames = 0; //CONTADOR DE FRAMES
@@ -32,6 +32,13 @@ let points = 0;
 ctx.font = "30px Arial";
 
 //TEMPORIZADOR
+
+//AUDIO
+
+const audio = new Audio();
+audio.src = "./images/Ingredients/Lyonesse.ogg";
+audio.loop = true;
+
 //let tiempo = document.getElementsByID("temp");
 
 //DECLARO TODAS LAS CLASES, CHEF, LIMON, CHELAS, ETC.
@@ -60,6 +67,15 @@ class Background1{
         this.image = new Image ();
         this.image.src = "./images/white-crumpled-paper-texture-background-260nw-1726913749.webp";
     }
+
+    gameOver(){
+        ctx.filllText("Game Over", 250, 200)
+    }
+
+    win(){
+        ctx.filllText("Ya ganaste", 250, 200)
+    }
+
     draw(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
@@ -368,7 +384,7 @@ class Basura{
         this.width = w;
         this.height = h;
         this.image = new Image();
-        this.image.src = "/images/Ingredients/bote.png";
+        this.image.src = "./images/Ingredients/bote.png";
     }
     draw(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);   
@@ -382,7 +398,7 @@ class Entrega{
         this.width = w;
         this.height = h;
         this.image = new Image();
-        this.image.src = "/images/Ingredients/arrow.png"
+        this.image.src = "./images/Ingredients/arrow.png"
     }
     draw(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -441,8 +457,8 @@ function update(){
             preparado.push('Cerveza Clara')
         }
     }if(chefsito.collision(victoria)){
-        if(chefsito.isTouch && !preparado.includes('Cervez Obscura')){
-            preparado.push('Cerveza Obscura')
+        if(chefsito.isTouch && !preparado.includes("Cerveza Obscura")){
+            preparado.push("Cerveza Obscura")
         }
     }if(chefsito.collision(vaso)){
         if(chefsito.isTouch && !preparado.includes('Vaso')){
@@ -450,7 +466,6 @@ function update(){
         }
     }if(chefsito.collision(sal)){
         if(chefsito.isTouch && !preparado.includes('Sal')){
-            //aqui hago push a mi arreglo con limonsito
             preparado.push('Sal')
         }
     }if(chefsito.collision(maggi)){
@@ -458,7 +473,7 @@ function update(){
             preparado.push('Salsa Maggi')
         }
     }if(chefsito.collision(inglesa)){
-        if(chefsito.isTouch && !preparado.includes('Salsa Iglesa')){
+        if(chefsito.isTouch && !preparado.includes('Salsa Inglesa')){
             preparado.push('Salsa Inglesa')
         }
     }if(chefsito.collision(valentina)){
@@ -471,7 +486,7 @@ function update(){
         }
     }if(chefsito.collision(botesito)){
         if(chefsito.isTouch === true){
-        preparado.splice(0,preparado.length);
+            preparado.splice(0);
         }
     }if(chefsito.collision(flechita)){
        if(chefsito.isTouch === true){
@@ -484,6 +499,25 @@ function update(){
 
 function start(){
     requestAnimationFrame(update)
+    audio.play();
+    temporizador.conteoSegundos();
+}
+
+function gameOver(){
+    audio.pause()
+    button.disabled = false;
+    //button.onclick = resetGame
+    fondito1.gameOver()
+    requestId = undefined
+    cancelAnimationFrame()
+}
+
+function win(){
+    audio.pause();
+    button.disabled = false;
+    fondito1.win();
+    cancelAnimationFrame();
+    requestID = undefined;
 }
 
 function compareArray(){
@@ -495,10 +529,7 @@ function compareArray(){
     for(var i = 0; i < salLimon.length; i++){
         if(salLimon[i] = preparado[i]){
             points += 10;
-            preparado.splice(0,preparado.length);
-            this.contador + 20;
-        }else{
-            //timer menos 5 segundos
+            preparado.splice(0);
         }
     }
 }
@@ -515,14 +546,15 @@ function tempo (id, inicio, final){
     this.conteoSegundos = function(){
         if(this.contador == this.final){
             this.conteoSegundos=null;
+            gameOver();
         }
         document.getElementById("temp").innerHTML = this.contador--;
         setTimeout(this.conteoSegundos.bind(this), 1000);
     }
 }
 
-let temporizador = new tempo('temporizador', 60, 0)
-temporizador.conteoSegundos();
+let temporizador = new tempo('temporizador', 60, -1)
+
 
 //MOVER CHEF
 addEventListener("keydown", (event)=>{
@@ -554,6 +586,10 @@ addEventListener("keydown", (event)=>{
 
     if(event.keyCode === 32){
         compareArray()
+    }
+
+    if(event.keyCode === 189){
+        gameOver()
     }
 })
 
