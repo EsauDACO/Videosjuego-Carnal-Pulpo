@@ -35,10 +35,10 @@ ctx.font = "30px Arial";
 
 //AUDIO
 
-const audio = new Audio();
+/*const audio = new Audio();
 audio.src = "./images/Ingredients/Lyonesse.ogg";
 audio.loop = true;
-
+*/
 //let tiempo = document.getElementsByID("temp");
 
 //DECLARO TODAS LAS CLASES, CHEF, LIMON, CHELAS, ETC.
@@ -90,7 +90,7 @@ class Chef{
         this.width = w;
         this.height = h;
         this.isTouch = false;
-
+        //Declaro cada uno de los moviminetos del personaje
         this.image = new Image();
         this.image.src = pulpin[0];
         this.image1 = new Image();
@@ -597,6 +597,6 @@ addEventListener("keyup", (event)=>{
     if(event.keyCode === 80){
         chefsito.isTouch = false;
     }
-}), 
+}),
 
 button.onclick = start
